@@ -1,21 +1,19 @@
 import React, {Component} from 'react'
 
 class UserInput extends Component{
-  state = {
-    total: ''
-  }
   handleChange(event){
-    this.setState({total: event.target.value})
+    this.setState({totall: event.target.value})
   }
   render(){
+    const {total, updateTotal} = this.props
     return (
       <form className="userInput">
         <div className="userInput_item">
           <input
-            type="text"
             name="total"
-            value={this.state.total}
-            onChange={this.handleChange.bind(this)}
+            value={total}
+            placeholder="50"
+            onChange={updateTotal}
           />
           <label>ml</label>
         </div>
