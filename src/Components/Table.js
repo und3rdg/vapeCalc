@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import UserInput from './UserInput.js'
 
 
 class CalcTable extends Component {
   render(){
     return (
-      <table className="calc_table">
-        <Thead />
-        <Tbody />
-      </table>
+      <div>
+        <UserInput />
+        <table className="calc_table">
+          <Thead />
+          <Tbody />
+        </table>
+      </div>
     )
   }
 }
@@ -31,7 +35,7 @@ class Thead extends Component {
 
 // calc mililitres from grams
 // eslint-disable-next-line
-function calcGr(ml, type){ 
+function calcGrFromMl(ml, type){ 
   let gr
   switch(type){
     case 'pg':
@@ -44,6 +48,11 @@ function calcGr(ml, type){
       console.error('wrong type')
   }
   return gr 
+}
+
+// eslint-disable-next-line
+function calcMlFromPercent(total, percent){
+  return total * percent / 100
 }
 
 class Tbody extends Component {
@@ -84,15 +93,15 @@ class Tbody extends Component {
       <tbody>
         {_.map(this.state.ingredients.base, (value, name)=>{
           return(
-        <tr key={name}>
-          <td>{value.name}</td>
-          <td>{value.ml} ml</td>
-          <td>{value.gr} gr</td>
-          <td>{value.percent} %</td>
-        </tr>
+            <tr key={name}>
+              <td>{value.name}</td>
+              <td>{value.ml} ml</td>
+              <td>{value.gr} gr</td>
+              <td>{value.percent} %</td>
+            </tr>
           )
         })}
-        <tr>
+        <tr className="sum">
           <td>Sum</td>
           <td>x ml</td>
           <td>x gr</td>
