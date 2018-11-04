@@ -8,35 +8,34 @@ import Tbody from './Tbody.js'
 
 class CalcTable extends Component {
   state = {
-    total: 50 
-  }
-  render(){
-    const titles = [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ]
-    const updateTotal = (event) => {
-      this.setState({total: event.target.value})
-    }
-
-  
-    let ingredients = {
+    total: 50,
+    theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
+    ingredients: {
       base: [
         { name: 'Nicotine' , percent: '7' },
         { name: 'PG'       , percent: '23' },
         { name: 'VG'       , percent: '60' },
       ],
-      flavore: [
+      flavour: [
         { name: 'flav1'    , percent: 10 },
       ]
     }
+  }
+  render(){
+    const updateTotal = (event) => {
+      this.setState({total: event.target.value})
+    }
+  
     
     return (
       <div>
         <UserInput updateTotal={updateTotal} />
         <table className="calc_table">
           <Thead
-            titles={titles}
+            titles={this.state.theadTitles}
           />
           <Tbody
-            ingredients={ingredients}
+            ingredients={this.state.ingredients}
             total={this.state.total}
           />
         </table>
@@ -44,10 +43,5 @@ class CalcTable extends Component {
     )
   }
 }
-
-
-
-
-
 
 export default CalcTable
