@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import './Table.scss'
 import UserInput from './UserInput.js'
+import './UserInput.scss'
 
 
 class CalcTable extends Component {

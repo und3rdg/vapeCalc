@@ -1,0 +1,16 @@
+table.calc_table{
+  border-collapse: collapse;
+  th, td{
+    border: 1px solid #bcc;
+    padding: 5px 10px;
+  }
+  td{
+    text-align: right;
+    &:first-child{
+      text-align: left;
+    }
+  }
+  tr.sum{
+    border-bottom: 2px solid #aaa;
+  }
+}
