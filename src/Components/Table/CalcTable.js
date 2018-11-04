@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
-import './Table.scss'
+import './CalcTable.scss'
 import UserInput from './UserInput.js'
 import './UserInput.scss'
 
@@ -35,8 +34,6 @@ class Thead extends Component {
   }
 }
 
-// calc mililitres from grams
-// eslint-disable-next-line
 function calcGrFromMl(ml, type){ 
   let gr
   switch(type){
@@ -49,25 +46,26 @@ function calcGrFromMl(ml, type){
     default:
       console.error('wrong type')
   }
-  return gr 
+  return gr.toFixed(2) 
 }
 
 // eslint-disable-next-line
 function calcMlFromPercent(total, percent){
-  return total * percent / 100
+  let ml = total * percent / 100
+  return ml.toFixed(2)
 }
 
 class Tbody extends Component {
   state = {
     ingredients: {
-      base: {
-        nicotine: {
+      base: [
+        {
           name: 'Nicotine',
           gr: '3.60',
           ml: '3.00',
           percent: '5'
         },
-        pg: {
+        {
           name: 'PG',
           // |--------|--------|
           // | 100ml  | 103.6g |
@@ -77,7 +75,7 @@ class Tbody extends Component {
           ml: '3.00',
           percent: '5'
         },
-        vg: {
+        {
           name: 'VG',
           // |--------|--------|
           // | 100ml  | 126.1g |
@@ -87,19 +85,24 @@ class Tbody extends Component {
           ml: '3',
           percent: '5'
         },
-      }
+      ]
     }
   }
   render(){
     return (
       <tbody>
-        {_.map(this.state.ingredients.base, (value, name)=>{
+        {this.state.ingredients.base.map( (val, idx)=>{
+          let name = val.name
+          let type = name === 'VG' ? 'vg' : 'pg'
+          let ml = val.ml
+          let gr = calcGrFromMl(ml, type)
+          let percent = val.percent
           return(
-            <tr key={name}>
-              <td>{value.name}</td>
-              <td>{value.ml} ml</td>
-              <td>{value.gr} gr</td>
-              <td>{value.percent} %</td>
+            <tr key={idx}>
+              <td>{name}</td>
+              <td>{ml} ml</td>
+              <td>{gr} gr</td>
+              <td>{percent} %</td>
             </tr>
           )
         })}
