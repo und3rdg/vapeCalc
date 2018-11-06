@@ -28,7 +28,7 @@ class CalcTable extends Component {
   
     
     return (
-      <div>
+      <form onSubmit={e => e.preventDefault()}>
         <UserInput updateTotal={updateTotal} />
         <table className="calc_table">
           <Thead
@@ -39,7 +39,7 @@ class CalcTable extends Component {
             total={this.state.total}
           />
         </table>
-      </div>
+      </form>
     )
   }
 }

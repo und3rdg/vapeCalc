@@ -1,13 +1,10 @@
 import React, {Component} from 'react'
 
 class UserInput extends Component{
-  handleChange(event){
-    this.setState({totall: event.target.value})
-  }
   render(){
     const {total, updateTotal} = this.props
     return (
-      <form className="userInput">
+      <div className="userInput">
         <div className="userInput_item">
           <input
             name="total"
@@ -17,7 +14,7 @@ class UserInput extends Component{
           />
           <label>ml</label>
         </div>
-      </form>
+      </div>
     )
   }
 }
