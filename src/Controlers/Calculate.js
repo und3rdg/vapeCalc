@@ -10,12 +10,30 @@ function calcGrFromMl(ml, type){
     default:
     console.error('wrong type')
   }
-  return gr.toFixed(2) 
+  return parseFloat(gr.toFixed(2)) 
 }
 
 function calcMlFromPercent(total, percent){
   let ml = total * percent / 100
-  return ml.toFixed(2)
+  return parseFloat(ml.toFixed(2))
 }
 
-export {calcGrFromMl, calcMlFromPercent} 
+function total(base){
+  const total = base.reduce((total, el)=>{
+    total.ml      += el.ml
+    total.gr      += el.gr
+    total.percent += el.percent
+    return total
+  },{ml:0, gr:0, percent:0})
+
+  total.ml      = parseFloat(total.ml.toFixed(2))
+  total.gr      = parseFloat(total.gr.toFixed(2))
+  total.percent = parseFloat(total.percent.toFixed(2))
+  return total
+}
+
+export {
+  calcGrFromMl,
+  calcMlFromPercent,
+  total,
+} 

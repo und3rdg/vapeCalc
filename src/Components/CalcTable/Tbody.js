@@ -3,12 +3,7 @@ import React, {Component} from 'react'
 
 class Tbody extends Component {
   render(){
-    const {base} = this.props
-    
-    let totalMl = 0
-    let totalGr = 0
-    let totalPercent = 0
-
+    const {base, baseTotal} = this.props
     return (
       <tbody>
         {base.map((base, idx)=>{
@@ -23,9 +18,9 @@ class Tbody extends Component {
         })}
         <tr className="sum">
           <td>Sum</td>
-          <td>{totalMl} ml</td>
-          <td>{totalGr} gr</td>
-          <td>{totalPercent} %</td>
+          <td>{baseTotal.ml} ml</td>
+          <td>{baseTotal.gr} gr</td>
+          <td>{baseTotal.percent} %</td>
         </tr>
       </tbody>
     )

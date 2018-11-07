@@ -4,13 +4,18 @@ import './UserInput.scss'
 import UserInput from './UserInput.js'
 import Thead from './Thead.js'
 import Tbody from './Tbody.js'
-import {calcGrFromMl as calcGr, calcMlFromPercent as calcMl}  from './../../Controlers/Calculate.js'
+import {
+  calcGrFromMl as calcGr,
+  calcMlFromPercent as calcMl,
+  total as calcTotal
+}  from './../../Controlers/Calculate.js'
 
 
 class CalcTable extends Component {
   state = {
     total: 50,
     theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
+    baseTotal: {ml:0, gr:0, percent:0},
     base: [
       { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
       { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
@@ -36,7 +41,9 @@ class CalcTable extends Component {
           base.gr = calcGr(base.ml, base.type)
           return base
         })
-      this.setState({ base })
+      
+      const baseTotal = calcTotal(base)
+      this.setState({ base, baseTotal })
     }
 
     return (
@@ -48,6 +55,7 @@ class CalcTable extends Component {
           />
           <Tbody
             base={this.state.base}
+            baseTotal={this.state.baseTotal}
             total={this.state.total}
           />
         </table>
