@@ -9,7 +9,7 @@ class UserInput extends Component{
           <input
             name="total"
             value={total}
-            placeholder="50"
+            placeholder="{^,^}"
             onChange={updateTotal}
           />
           <label>ml</label>
