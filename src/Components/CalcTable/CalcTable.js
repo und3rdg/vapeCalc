@@ -4,6 +4,7 @@ import './UserInput.scss'
 import UserInput from './UserInput.js'
 import Thead from './Thead.js'
 import Tbody from './Tbody.js'
+import {calcGrFromMl as calcGr, calcMlFromPercent as calcMl}  from './../../Controlers/Calculate.js'
 
 
 class CalcTable extends Component {
@@ -29,34 +30,12 @@ class CalcTable extends Component {
       updateBase(total)
     }
 
-    const calcGr = (ml, type) => { 
-      let gr
-      switch(type){
-        case 'pg':
-        gr = ml * 103.6 / 100
-          break
-        case 'vg':
-        gr = ml * 126.1 / 100
-          break
-        default:
-        console.error('wrong type')
-      }
-      return gr.toFixed(2) 
-    }
-
-    const calcMl = (total, percent) => {
-      let ml = total * percent / 100
-      console.log(total)
-      return ml.toFixed(2)
-    }
-    
     const updateBase = (total) => {
       const base = this.state.ingredients.base
         .map((base, idx) => {
           base.type = base.name === 'VG' ? 'vg' : 'pg'
           base.ml = calcMl(total, base.percent)
           base.gr = calcGr(base.ml, base.type)
-
           return base
         })
       this.setState({ base })
