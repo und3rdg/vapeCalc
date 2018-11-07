@@ -11,27 +11,25 @@ class CalcTable extends Component {
   state = {
     total: 50,
     theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
-    ingredients: {
-      base: [
-        { name: 'Nicotine' , percent: 7  , ml: 0, gr: 0, type:''},
-        { name: 'PG'       , percent: 23 , ml: 0, gr: 0, type:''},
-        { name: 'VG'       , percent: 60 , ml: 0, gr: 0, type:''},
-      ],
-      flavour: [
-        { name: 'flav1'    , percent: 10 },
-      ]
-    }
+    base: [
+      { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
+      { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
+      { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:''},
+    ],
+    flavour: [
+      { name: 'flav1'    , percent: 10 },
+    ]
   }
 
   render(){
     const updateTotal = (event) => {
       const total = event.target.value
-      this.setState({total: total})
+      this.setState({ total })
       updateBase(total)
     }
 
     const updateBase = (total) => {
-      const base = this.state.ingredients.base
+      const base = this.state.base
         .map((base, idx) => {
           base.type = base.name === 'VG' ? 'vg' : 'pg'
           base.ml = calcMl(total, base.percent)
@@ -41,8 +39,6 @@ class CalcTable extends Component {
       this.setState({ base })
     }
 
-    // updateBase()
-
     return (
       <form onSubmit={e => e.preventDefault()}>
         <UserInput updateTotal={updateTotal} />
@@ -51,7 +47,7 @@ class CalcTable extends Component {
             titles={this.state.theadTitles}
           />
           <Tbody
-            base={this.state.ingredients.base}
+            base={this.state.base}
             total={this.state.total}
           />
         </table>
