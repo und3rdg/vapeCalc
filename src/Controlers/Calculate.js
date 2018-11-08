@@ -13,10 +13,12 @@ function calcGrFromMl(ml, type){
   return parseFloat(gr.toFixed(2)) 
 }
 
+
 function calcMlFromPercent(total, percent){
   let ml = total * percent / 100
   return parseFloat(ml.toFixed(2))
 }
+
 
 function total(base){
   const total = base.reduce((total, el)=>{
@@ -32,8 +34,20 @@ function total(base){
   return total
 }
 
+
+const updateBase = (base, total) => {
+  return base
+    .map((base, idx) => {
+      base.type = base.name === 'VG' ? 'vg' : 'pg'
+      base.ml = calcMlFromPercent(total, base.percent)
+      base.gr = calcGrFromMl(base.ml, base.type)
+      return base
+    })
+}
+
 export {
   calcGrFromMl,
   calcMlFromPercent,
   total,
+  updateBase
 } 

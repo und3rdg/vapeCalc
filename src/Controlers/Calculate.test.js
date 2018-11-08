@@ -1,7 +1,8 @@
 import {
   calcGrFromMl,
   calcMlFromPercent,
-  total 
+  total,
+  updateBase
 } from './Calculate.js' 
 
 // fake data
@@ -14,6 +15,8 @@ const f = {
     { name: 'PG'       , ml: 3.10,  gr: 10.10,  percent: 23.00 , type:''},
     { name: 'VG'       , ml: 5.101, gr: 10.011, percent: 60.002, type:''}, //(it should round it)
   ],
+  baseUpdated: [{"gr": 7.25, "ml": 7, "name": "Nicotine", "percent": 7, "type": "pg"}, {"gr": 23.83, "ml": 23, "name": "PG", "percent": 23, "type": "pg"}, {"gr": 75.66, "ml": 60, "name": "VG", "percent": 60.002, "type": "vg"}],
+
 }
 
 //---------------------------------
@@ -47,4 +50,13 @@ it('should return total of percent', ()=>{
 })
 it('should by object', ()=>{
   expect(typeof total(f.base)).toBe("object")
+})
+
+
+//--------intergity----------------
+it('should return object', ()=>{
+  expect(typeof updateBase(f.base, f.total)).toBe("object")
+})
+it('should return object', ()=>{
+  expect(updateBase(f.base, f.total)).toEqual(f.baseUpdated)
 })
