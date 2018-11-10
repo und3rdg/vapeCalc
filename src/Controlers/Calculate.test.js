@@ -16,7 +16,6 @@ const f = {
     { name: 'VG'       , ml: 5.101, gr: 10.011, percent: 60.002, type:''}, //(it should round it)
   ],
   baseUpdated: [{"gr": 7.25, "ml": 7, "name": "Nicotine", "percent": 7, "type": "pg"}, {"gr": 23.83, "ml": 23, "name": "PG", "percent": 23, "type": "pg"}, {"gr": 75.66, "ml": 60, "name": "VG", "percent": 60.002, "type": "vg"}],
-
 }
 
 //---------------------------------

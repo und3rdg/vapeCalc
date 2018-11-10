@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 class UserInput extends Component{
   render(){
-    const {total, updateTotal} = this.props
+    const {total, updateTotalHandler} = this.props
     return (
       <div className="userInput">
         <div className="userInput_item">
@@ -10,7 +10,7 @@ class UserInput extends Component{
             name="total"
             value={total}
             placeholder="{^,^}"
-            onChange={updateTotal}
+            onChange={updateTotalHandler}
           />
           <label>ml</label>
         </div>

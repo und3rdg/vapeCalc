@@ -10,7 +10,10 @@ table.calc_table{
       text-align: left;
     }
   }
-  tr.sum{
-    border-bottom: 2px solid #aaa;
+  tr.total{
+    $border: 2px solid #aaa;
+    border-top: $border;
+    border-bottom: $border;
+    font-weight: 600;
   }
 }

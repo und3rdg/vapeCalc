@@ -15,41 +15,51 @@ class CalcTable extends Component {
     this.state = {
       total: 10,
       theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
-      baseTotal: {ml:0, gr:0, percent:0},
       base: [
         { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
         { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
         { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:''},
       ],
+      baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
-        { name: 'flav1'    , percent: 10 },
-      ]
+        { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+      ],
+      flavourTotal: {ml:0, gr:0, percent:0},
     }
 
+    debugger
     this.state.base = updateBase(this.state.base, this.state.total)
     this.state.baseTotal = calcTotal(this.state.base)
+    this.state.flavour = updateBase(this.state.flavour, this.state.total)
+    this.state.flavourTotal = calcTotal(this.state.flavour)
   }
 
   render(){
-    const updateTotal = (event) => {
+    const updateTotalHandler = (event) => {
       const total = event.target.value
+
       const base = updateBase(this.state.base, total)
       const baseTotal = calcTotal(this.state.base)
 
-      this.setState({ total, base, baseTotal })
+      const flavour = updateBase(this.state.flavour, total)
+      const flavourTotal = calcTotal(this.state.flavour)
+
+      this.setState({ total, base, baseTotal, flavour, flavourTotal })
     }
 
     return (
       <form onSubmit={e => e.preventDefault()}>
-        <UserInput updateTotal={updateTotal} />
+        <UserInput updateTotalHandler={updateTotalHandler} />
         <table className="calc_table">
           <Thead
             titles={this.state.theadTitles}
           />
           <Tbody
+            total={this.state.total}
             base={this.state.base}
             baseTotal={this.state.baseTotal}
-            total={this.state.total}
+            flavour={this.state.flavour}
+            flavourTotal={this.state.flavourTotal}
           />
         </table>
       </form>
