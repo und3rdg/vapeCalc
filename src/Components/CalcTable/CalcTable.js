@@ -29,6 +29,7 @@ class CalcTable extends Component {
 
     this.state.base = updateBase(this.state.base, this.state.total)
     this.state.baseTotal = calcTotal(this.state.base)
+
     this.state.flavour = updateBase(this.state.flavour, this.state.total)
     this.state.flavourTotal = calcTotal(this.state.flavour)
   }
@@ -43,7 +44,7 @@ class CalcTable extends Component {
   }
 
   render(){
-    const updateTotalHandler = (event) => {
+    const updateFromTotalHandler = (event) => {
       const total = event.target.value
 
       const base = updateBase(this.state.base, total)
@@ -55,9 +56,33 @@ class CalcTable extends Component {
       this.setState({ total, base, baseTotal, flavour, flavourTotal })
     }
 
+    const updateFromPercentHandler = (event, idx, type) => {
+      const value = event.target.value
+
+      switch(type){
+        case 'flavour':
+          let flavour = [ ...this.state.flavour ]
+          flavour[idx].percent = value
+          this.setState({ flavour })
+          flavour = updateBase(this.state.flavour, this.state.total)
+          const flavourTotal = calcTotal(flavour)
+          this.setState({ flavour, flavourTotal })
+          break
+        case 'base':
+          let base = [ ...this.state.base ]
+          base[idx].percent = value
+          this.setState({ base })
+          base = updateBase(this.state.base, this.state.total)
+          const baseTotal = calcTotal(base)
+          this.setState({ base, baseTotal })
+          break
+        default:
+          console.error('wrong type in updateFromTotalHandler()')
+      }
+    }
     return (
       <form onSubmit={e => e.preventDefault()}>
-        <UserInput updateTotalHandler={updateTotalHandler} />
+        <UserInput updateFromTotalHandler={updateFromTotalHandler} />
         <table className="calc_table">
           <Thead
             titles={this.state.theadTitles}
@@ -68,6 +93,7 @@ class CalcTable extends Component {
             baseTotal={this.state.baseTotal}
             flavour={this.state.flavour}
             flavourTotal={this.state.flavourTotal}
+            updateFromPercentHandler={updateFromPercentHandler}
           />
         </table>
         <button onClick={this.addFlavorHandler}>Add flavour</button>
