@@ -13,7 +13,7 @@ class CalcTable extends Component {
   constructor(){
     super()
     this.state = {
-      total: 10,
+      total: 50,
       theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
       base: [
         { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
@@ -22,7 +22,10 @@ class CalcTable extends Component {
       ],
       baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
-        { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+        // test data
+        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
       ],
       flavourTotal: {ml:0, gr:0, percent:0},
     }
@@ -34,6 +37,7 @@ class CalcTable extends Component {
     this.state.flavourTotal = calcTotal(this.state.flavour)
   }
 
+
   addFlavorHandler = () => {
     const emptyFlavor = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
     const flavour = [
@@ -43,46 +47,57 @@ class CalcTable extends Component {
     this.setState({flavour})
   }
 
+
+  totalHandler = (event) => {
+    const total = event.target.value
+
+    const base = updateBase(this.state.base, total)
+    const baseTotal = calcTotal(this.state.base)
+
+    const flavour = updateBase(this.state.flavour, total)
+    const flavourTotal = calcTotal(this.state.flavour)
+
+    this.setState({ total, base, baseTotal, flavour, flavourTotal })
+  }
+
+  
+  percentHandler = (event, idx, type) => {
+    switch(type){
+      case 'flavour': 
+        let flavour = [ ...this.state.flavour ]
+        flavour[idx].percent = event.target.value
+        this.setState({ flavour })
+        flavour = updateBase(this.state.flavour, this.state.total)
+        const flavourTotal = calcTotal(flavour)
+        this.setState({ flavour, flavourTotal })
+        break
+      case 'base': 
+        let base = [ ...this.state.base ]
+        base[idx].percent = event.target.value
+        this.setState({ base })
+        base = updateBase(this.state.base, this.state.total)
+        const baseTotal = calcTotal(base)
+        this.setState({ base, baseTotal })
+        break
+      default: console.error('wrong type in totalHandler()')
+    }
+  }
+
+
+  nameHandler = (event, idx) => {
+    const flavour = this.state.flavour
+    flavour[idx].name = event.target.value
+    this.setState({ flavour })
+  }
+
+
   render(){
-    const updateFromTotalHandler = (event) => {
-      const total = event.target.value
-
-      const base = updateBase(this.state.base, total)
-      const baseTotal = calcTotal(this.state.base)
-
-      const flavour = updateBase(this.state.flavour, total)
-      const flavourTotal = calcTotal(this.state.flavour)
-
-      this.setState({ total, base, baseTotal, flavour, flavourTotal })
-    }
-
-    const updateFromPercentHandler = (event, idx, type) => {
-      const value = event.target.value
-
-      switch(type){
-        case 'flavour':
-          let flavour = [ ...this.state.flavour ]
-          flavour[idx].percent = value
-          this.setState({ flavour })
-          flavour = updateBase(this.state.flavour, this.state.total)
-          const flavourTotal = calcTotal(flavour)
-          this.setState({ flavour, flavourTotal })
-          break
-        case 'base':
-          let base = [ ...this.state.base ]
-          base[idx].percent = value
-          this.setState({ base })
-          base = updateBase(this.state.base, this.state.total)
-          const baseTotal = calcTotal(base)
-          this.setState({ base, baseTotal })
-          break
-        default:
-          console.error('wrong type in updateFromTotalHandler()')
-      }
-    }
     return (
       <form onSubmit={e => e.preventDefault()}>
-        <UserInput updateFromTotalHandler={updateFromTotalHandler} />
+        <UserInput
+          totalHandler={this.totalHandler}
+          total={this.state.total}
+        />
         <table className="calc_table">
           <Thead
             titles={this.state.theadTitles}
@@ -93,7 +108,8 @@ class CalcTable extends Component {
             baseTotal={this.state.baseTotal}
             flavour={this.state.flavour}
             flavourTotal={this.state.flavourTotal}
-            updateFromPercentHandler={updateFromPercentHandler}
+            percentHandler={this.percentHandler}
+            nameHandler={this.nameHandler}
           />
         </table>
         <button onClick={this.addFlavorHandler}>Add flavour</button>

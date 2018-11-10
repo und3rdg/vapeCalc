@@ -9,6 +9,11 @@ table.calc_table{
     &:first-child{
       text-align: left;
     }
+    .type_name{
+      width: auto;
+      text-align: left;
+      font: inherit;
+    }
   }
   tr.total{
     $border: 2px solid #aaa;
