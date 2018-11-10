@@ -27,11 +27,19 @@ class CalcTable extends Component {
       flavourTotal: {ml:0, gr:0, percent:0},
     }
 
-    debugger
     this.state.base = updateBase(this.state.base, this.state.total)
     this.state.baseTotal = calcTotal(this.state.base)
     this.state.flavour = updateBase(this.state.flavour, this.state.total)
     this.state.flavourTotal = calcTotal(this.state.flavour)
+  }
+
+  addFlavorHandler = () => {
+    const emptyFlavor = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
+    const flavour = [
+      ...this.state.flavour,
+      emptyFlavor
+    ]
+    this.setState({flavour})
   }
 
   render(){
@@ -62,6 +70,7 @@ class CalcTable extends Component {
             flavourTotal={this.state.flavourTotal}
           />
         </table>
+        <button onClick={this.addFlavorHandler}>Add flavour</button>
       </form>
     )
   }
