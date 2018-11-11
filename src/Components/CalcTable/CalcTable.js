@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './CalcTable.scss'
-import './UserInput.scss'
+import Title from './Title.js'
 import UserInput from './UserInput.js'
 import Thead from './Thead.js'
 import Tbody from './Tbody.js'
@@ -13,6 +13,7 @@ class CalcTable extends Component {
   constructor(){
     super()
     this.state = {
+      recipeName: '',
       total: 50,
       theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
       base: [
@@ -38,15 +39,16 @@ class CalcTable extends Component {
   }
 
 
-  addFlavorHandler = () => {
-    const emptyFlavor = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
-    const flavour = [
-      ...this.state.flavour,
-      emptyFlavor
-    ]
-    this.setState({flavour})
+  saveHandler = () => {
+    const data = this.state
+    console.log(data)
   }
 
+
+  titleHandler = (event) => {
+    const recipeName = event.target.value
+    this.setState({ recipeName })
+  }
 
   totalHandler = (event) => {
     const total = event.target.value
@@ -91,11 +93,21 @@ class CalcTable extends Component {
   }
 
 
-  delHandler = (event, idx)=> {
+  delFlavourHandler = (event, idx)=> {
     event.preventDefault()
     const flavour = this.state.flavour
       .filter( (item, i) => i !== idx )
     this.setState({ flavour })
+  }
+
+
+  addFlavourHandler = () => {
+    const emptyFlavour = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
+    const flavour = [
+      ...this.state.flavour,
+      emptyFlavour
+    ]
+    this.setState({flavour})
   }
 
 
@@ -104,6 +116,10 @@ class CalcTable extends Component {
       <form
         onSubmit={e => e.preventDefault()}
       >
+        <Title
+          recipeName={this.state.recipeName}
+          titleHandler={this.titleHandler}
+        />
         <UserInput
           totalHandler={this.totalHandler}
           total={this.state.total}
@@ -120,10 +136,16 @@ class CalcTable extends Component {
             flavourTotal={this.state.flavourTotal}
             percentHandler={this.percentHandler}
             nameHandler={this.nameHandler}
-            delHandler={this.delHandler}
+            delFlavourHandler={this.delFlavourHandler}
           />
         </table>
-        <button onClick={this.addFlavorHandler}>Add flavour</button>
+        <button
+          onClick={this.addFlavourHandler}
+        >Add flavour</button>
+        <button
+          type="button"
+          onClick={this.saveHandler}
+        >Save</button>
       </form>
     )
   }

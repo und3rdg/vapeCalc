@@ -18,20 +18,21 @@ class Tbody extends Component {
   }
 
   flavourRow = (name, idx) => {
-    const {percentHandler, nameHandler, delHandler} = this.props
+    const {percentHandler, nameHandler, delFlavourHandler} = this.props
     return(
       <tr key={idx}>
         <td>
-          <div className="flavour_name__wrap">
+          <div className="flex_wrap">
             <input
               className="flavour_name"
               defaultValue={name.name}
+              placeholder="Flavour name"
               onChange={ (event) => nameHandler(event, idx) }
             />
             <button
               className="btn_del"
               type="button"
-              onClick={(event) => delHandler(event, idx)}
+              onClick={(event) => delFlavourHandler(event, idx)}
             >X</button>
           </div>
         </td>

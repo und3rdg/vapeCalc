@@ -1,42 +1,74 @@
+.recipe_name{
+  margin-top: 20px;
+  input{
+    // width: 100%;
+    text-align: left;
+    font-size: 2em;
+  }
+}
+.userInput{
+  display: flex;
+  margin: 10px 0;
+  .userInput_item{
+    box-shadow: 0px 1px 1px 1px;
+  }
+  input, .userInput label{
+    padding: 5px;
+    font-size: 16px;
+    line-height: 1;
+  }
+  input{
+    width: 45px;
+    text-align: right;
+  }
+  label{
+    padding-right: 5px;
+  }
+}
 table.calc_table{
+  $border_bold: 2px solid #aaa;
+  $border: 1px solid #bcc;
   border-collapse: collapse;
+  border: $border_bold;
+  input{
+    width: 40px;
+    text-align: right;
+  }
   th, td{
-    border: 1px solid #bcc;
+    border: $border;
     padding: 5px 10px;
+  }
+  th{
+    border-bottom: $border_bold;
   }
   td{
     text-align: right;
     &:first-child{
       text-align: left;
-      .flavour_name__wrap{
-        display: flex;
-        align-items: center;
-        .flavour_name{
-          width: auto;
-          text-align: left;
-          font: inherit;
-        }
-        .btn_del{
-          background: #C92525;
-          border-radius: 50%;
-          color: white;
-          box-shadow: 0px 0px 1px 1px #122,
-          inset 0px 0px 4px 0px white;
-          border: 0px solid white;
-          $size: 14px;
-          width: $size * 5/4;
-          height: $size;
-          font-size: $size * 2/3;
-          float: right;
-          margin-left: 10px;
-        }
+      .flavour_name{
+        width: auto;
+        text-align: left;
+        font: inherit;
+      }
+      .btn_del{
+        background: #C92525;
+        border-radius: 50%;
+        color: white;
+        box-shadow: 0px 0px 1px 1px #122,
+        inset 0px 0px 4px 0px white;
+        border: none; 
+        $size: 14px;
+        width: $size * 5/4;
+        height: $size;
+        font-size: $size * 2/3;
+        float: right;
+        margin-left: 10px;
       }
     }
   }
   tr.total{
-    $border: 2px solid #aaa;
-    border-top: $border;
-    border-bottom: $border;
+    border-top: $border_bold;
+    border-bottom: $border_bold;
     font-weight: 600;
   }
 }
