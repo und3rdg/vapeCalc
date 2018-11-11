@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.scss'
-import CalcTable from './Components/CalcTable/CalcTable.js'
+import CalcTable from './Components/CalcTable/CalcTable'
 
 
 class App extends Component {

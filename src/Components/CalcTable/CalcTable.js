@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import './CalcTable.scss'
-import Title from './Title.js'
-import UserInput from './UserInput.js'
-import Thead from './Thead.js'
-import Tbody from './Tbody.js'
+import Title from './Title'
+import UserInput from './UserInput'
+import Thead from './Thead'
+import Tbody from './Tbody'
 import {
   updateBase,
   total as calcTotal
-}  from './../../Controlers/Calculate.js'
+}  from './../../Controlers/Calculate'
 
 class CalcTable extends Component {
   constructor(){
