@@ -8,11 +8,29 @@ table.calc_table{
     text-align: right;
     &:first-child{
       text-align: left;
-    }
-    .type_name{
-      width: auto;
-      text-align: left;
-      font: inherit;
+      .flavour_name__wrap{
+        display: flex;
+        align-items: center;
+        .flavour_name{
+          width: auto;
+          text-align: left;
+          font: inherit;
+        }
+        .btn_del{
+          background: #C92525;
+          border-radius: 50%;
+          color: white;
+          box-shadow: 0px 0px 1px 1px #122,
+          inset 0px 0px 4px 0px white;
+          border: 0px solid white;
+          $size: 14px;
+          width: $size * 5/4;
+          height: $size;
+          font-size: $size * 2/3;
+          float: right;
+          margin-left: 10px;
+        }
+      }
     }
   }
   tr.total{

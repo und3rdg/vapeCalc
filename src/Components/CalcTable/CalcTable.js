@@ -91,9 +91,19 @@ class CalcTable extends Component {
   }
 
 
+  delHandler = (event, idx)=> {
+    event.preventDefault()
+    const flavour = this.state.flavour
+      .filter( (item, i) => i !== idx )
+    this.setState({ flavour })
+  }
+
+
   render(){
     return (
-      <form onSubmit={e => e.preventDefault()}>
+      <form
+        onSubmit={e => e.preventDefault()}
+      >
         <UserInput
           totalHandler={this.totalHandler}
           total={this.state.total}
@@ -110,6 +120,7 @@ class CalcTable extends Component {
             flavourTotal={this.state.flavourTotal}
             percentHandler={this.percentHandler}
             nameHandler={this.nameHandler}
+            delHandler={this.delHandler}
           />
         </table>
         <button onClick={this.addFlavorHandler}>Add flavour</button>

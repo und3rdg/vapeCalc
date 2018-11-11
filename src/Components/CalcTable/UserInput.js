@@ -2,14 +2,15 @@ import React, {Component} from 'react'
 
 class UserInput extends Component{
   render(){
-    const {total, totalHandler} = this.props
+    const { total, totalHandler } = this.props
     return (
       <div className="userInput">
         <div className="userInput_item">
           <input
-            defaultValue={total}
+            type="text"
+            defaultValue={ total }
             placeholder="{^,^}"
-            onChange={totalHandler}
+            onChange={ totalHandler }
           />
           <label>ml</label>
         </div>
