@@ -8,6 +8,7 @@ import {
   updateBase,
   total as calcTotal
 }  from './../../Controlers/Calculate'
+import { sendToApi } from './../../Controlers/api'
 
 class CalcTable extends Component {
   constructor(){
@@ -41,7 +42,7 @@ class CalcTable extends Component {
 
   saveHandler = () => {
     const data = this.state
-    console.log(data)
+    sendToApi(data, 'php', true)
   }
 
 
