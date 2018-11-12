@@ -22,12 +22,24 @@ function compressor(data){
     return el
   }
   compressData.base    = compressData.base.map(compressing)
-  compressData.flavour = compressData.map(compressing)
+  compressData.flavour = compressData.flavour.map(compressing)
   return compressData
 }
 
 function php(data){
   console.log(data)
+  const url = 'http://vapeapi/save.php'
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "payload": data
+    })
+  })
 }
 
 
