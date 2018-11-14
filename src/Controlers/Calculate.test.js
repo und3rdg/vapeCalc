@@ -1,8 +1,9 @@
 import {
   calcGrFromMl,
   calcMlFromPercent,
-  total,
-  updateBase
+  calcTotal,
+  calcIngredients,
+  updateIngredients,
 } from './Calculate.js' 
 
 // fake data
@@ -15,7 +16,16 @@ const f = {
     { name: 'PG'       , ml: 3.10,  gr: 10.10,  percent: 23.00 , type:''},
     { name: 'VG'       , ml: 5.101, gr: 10.011, percent: 60.002, type:''}, //(it should round it)
   ],
-  baseUpdated: [{"gr": 7.25, "ml": 7, "name": "Nicotine", "percent": 7, "type": "pg"}, {"gr": 23.83, "ml": 23, "name": "PG", "percent": 23, "type": "pg"}, {"gr": 75.66, "ml": 60, "name": "VG", "percent": 60.002, "type": "vg"}],
+  baseTotal: {ml:0, gr:0, percent:0},
+  flavour: [
+    { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+  ],
+  flavourTotal: {ml:0, gr:0, percent:0},
+  baseUpdated: [
+    {"name": "Nicotine" , "ml": 7  , "gr": 7.25  , "percent": 7      , "type": "pg"} ,
+    {"name": "PG"       , "ml": 23 , "gr": 23.83 , "percent": 23     , "type": "pg"} ,
+    {"name": "VG"       , "ml": 60 , "gr": 75.66 , "percent": 60.002 , "type": "vg"}
+  ],
 }
 
 describe('Calculate ml from total and percent', ()=>{
@@ -39,27 +49,37 @@ describe('Calculate Gr from Ml', ()=>{
   })
 })
 
-describe('total()', ()=>{
+describe('calcTotal()', ()=>{
   it('should return total of ml', ()=>{
-    expect(total(f.base).ml).toBe(10.3)
+    expect(calcTotal(f.base).ml).toBe(10.3)
   })
   it('should return total of gr', ()=>{
-    expect(total(f.base).gr).toBe(31.11)
+    expect(calcTotal(f.base).gr).toBe(31.11)
   })
   it('should return total of percent', ()=>{
-    expect(total(f.base).percent).toBe(90)
+    expect(calcTotal(f.base).percent).toBe(90)
   })
   it('should by object', ()=>{
-    expect(typeof total(f.base)).toBe("object")
+    expect(typeof calcTotal(f.base)).toBe("object")
   })
 })
 
 
-describe('Wrapper updateBase()', ()=>{
+describe('Wrapper calcIngredients()', ()=>{
   it('should return object', ()=>{
-    expect(typeof updateBase(f.base, f.total)).toBe("object")
+    expect(typeof calcIngredients(f.base, f.total)).toBe("object")
   })
   it('should by equal with another object', ()=>{
-    expect(updateBase(f.base, f.total)).toEqual(f.baseUpdated)
+    expect(calcIngredients(f.base, f.total)).toEqual(f.baseUpdated)
+  })
+})
+
+
+describe('calculate all with updateIngredients()', ()=>{
+  it('should return object', ()=>{
+    expect(typeof updateIngredients(f.total, f.base, f.flavour)).toBe("object")
+  })
+  it('should by equal with another object', ()=>{
+    expect( Object.keys(updateIngredients(f.total, f.base, f.flavour)) ).toEqual(["base", "flavour", "baseTotal", "flavourTotal"])
   })
 })

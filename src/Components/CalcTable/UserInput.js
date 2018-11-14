@@ -11,6 +11,7 @@ class UserInput extends Component{
             defaultValue={ total }
             placeholder="{^,^}"
             onChange={ totalHandler }
+            name="total"
           />
           <label>ml</label>
         </div>

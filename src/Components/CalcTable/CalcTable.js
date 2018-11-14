@@ -5,8 +5,9 @@ import UserInput from './UserInput'
 import Thead from './Thead'
 import Tbody from './Tbody'
 import {
-  updateBase,
-  total as calcTotal
+  calcIngredients,
+  calcTotal,
+  updateIngredients
 }  from './../../Controlers/Calculate'
 import { sendToApi } from './../../Controlers/api'
 
@@ -24,7 +25,7 @@ class CalcTable extends Component {
       ],
       baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
-        // test data
+        // sample data
         // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
         // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
         // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
@@ -32,83 +33,14 @@ class CalcTable extends Component {
       flavourTotal: {ml:0, gr:0, percent:0},
     }
 
-    this.state.base = updateBase(this.state.base, this.state.total)
-    this.state.baseTotal = calcTotal(this.state.base)
-
-    this.state.flavour = updateBase(this.state.flavour, this.state.total)
-    this.state.flavourTotal = calcTotal(this.state.flavour)
-  }
-
-
-  saveHandler = () => {
-    const data = this.state
-    sendToApi(data, 'php', true)
-  }
-
-
-  titleHandler = (event) => {
-    const recipeName = event.target.value
-    this.setState({ recipeName })
-  }
-
-  totalHandler = (event) => {
-    const total = event.target.value
-
-    const base = updateBase(this.state.base, total)
-    const baseTotal = calcTotal(this.state.base)
-
-    const flavour = updateBase(this.state.flavour, total)
-    const flavourTotal = calcTotal(this.state.flavour)
-
-    this.setState({ total, base, baseTotal, flavour, flavourTotal })
-  }
-
-  
-  percentHandler = (event, idx, type) => {
-    switch(type){
-      case 'flavour': 
-        let flavour = [ ...this.state.flavour ]
-        flavour[idx].percent = event.target.value
-        this.setState({ flavour })
-        flavour = updateBase(this.state.flavour, this.state.total)
-        const flavourTotal = calcTotal(flavour)
-        this.setState({ flavour, flavourTotal })
-        break
-      case 'base': 
-        let base = [ ...this.state.base ]
-        base[idx].percent = event.target.value
-        this.setState({ base })
-        base = updateBase(this.state.base, this.state.total)
-        const baseTotal = calcTotal(base)
-        this.setState({ base, baseTotal })
-        break
-      default: console.error('wrong type in totalHandler()')
+    const ingredients = updateIngredients(this.state.total, this.state.base, this.state.flavour)
+    this.state = {
+      ...this.state,
+      base         : ingredients.base,
+      baseTotal    : ingredients.baseTotal,
+      flavour      : ingredients.flavour,
+      flavourTotal : ingredients.flavourTotal,
     }
-  }
-
-
-  nameHandler = (event, idx) => {
-    const flavour = this.state.flavour
-    flavour[idx].name = event.target.value
-    this.setState({ flavour })
-  }
-
-
-  delFlavourHandler = (event, idx)=> {
-    event.preventDefault()
-    const flavour = this.state.flavour
-      .filter( (item, i) => i !== idx )
-    this.setState({ flavour })
-  }
-
-
-  addFlavourHandler = () => {
-    const emptyFlavour = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
-    const flavour = [
-      ...this.state.flavour,
-      emptyFlavour
-    ]
-    this.setState({flavour})
   }
 
 
@@ -149,6 +81,74 @@ class CalcTable extends Component {
         >Save</button>
       </form>
     )
+  }
+
+
+  totalHandler = (event) => {
+    const total = event.target.value
+    this.setState({ total })
+    this.setState(updateIngredients(total, this.state.base, this.state.flavour))
+  }
+
+
+  percentHandler = (event, idx, type) => {
+    // type can by flavour or base
+    switch(type){
+      case 'flavour': 
+        let flavour = [ ...this.state.flavour ]
+        flavour[idx].percent = event.target.value
+        this.setState({ flavour })
+        flavour = calcIngredients(this.state.flavour, this.state.total)
+        const flavourTotal = calcTotal(flavour)
+        this.setState({ flavour, flavourTotal })
+        break
+      case 'base': 
+        let base = [ ...this.state.base ]
+        base[idx].percent = event.target.value
+        this.setState({ base })
+        base = calcIngredients(this.state.base, this.state.total)
+        const baseTotal = calcTotal(base)
+        this.setState({ base, baseTotal })
+        break
+      default: console.error('wrong type in totalHandler()')
+    }
+  }
+
+
+  saveHandler = () => {
+    const data = this.state
+    sendToApi(data, 'php', true)
+  }
+
+
+  titleHandler = (event) => {
+    const recipeName = event.target.value
+    this.setState({ recipeName })
+  }
+
+
+  nameHandler = (event, idx) => {
+    const flavour = this.state.flavour
+    flavour[idx].name = event.target.value
+    this.setState({ flavour })
+  }
+
+
+  delFlavourHandler = (event, idx)=> {
+    event.preventDefault()
+    const flavour = this.state.flavour
+      .filter( (item, i) => i !== idx )
+    this.setState({ flavour })
+  }
+
+
+  addFlavourHandler = () => {
+    const emptyFlavour = { name: '' , ml: 0, gr: 0, percent: 0 , type:''}
+    const flavour = [
+      ...this.state.flavour,
+      emptyFlavour
+    ]
+    this.setState({flavour})
   }
 }
 

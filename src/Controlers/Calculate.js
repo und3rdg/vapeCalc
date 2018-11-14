@@ -20,7 +20,7 @@ function calcMlFromPercent(total, percent){
 }
 
 
-function total(base){
+function calcTotal(base){
   const total = base.reduce((total, el)=>{
     total.ml      += +el.ml
     total.gr      += +el.gr
@@ -35,7 +35,7 @@ function total(base){
 }
 
 
-const updateBase = (base, total) => {
+const calcIngredients = (base, total) => {
   return base
     .map((base, idx) => {
       base.type = base.name === 'VG' ? 'vg' : 'pg'
@@ -45,9 +45,20 @@ const updateBase = (base, total) => {
     })
 }
 
+
+const updateIngredients = (total, base, flavour) => {
+  return {
+    base         : calcIngredients(base, total),
+    flavour      : calcIngredients(flavour, total),
+    baseTotal    : calcTotal(base),
+    flavourTotal : calcTotal(flavour),
+  }
+}
+
 export {
   calcGrFromMl,
   calcMlFromPercent,
-  total,
-  updateBase
+  calcTotal,
+  calcIngredients,
+  updateIngredients,
 } 
