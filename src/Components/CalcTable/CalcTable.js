@@ -92,26 +92,13 @@ class CalcTable extends Component {
 
 
   percentHandler = (event, idx, type) => {
-    // type can by flavour or base
-    switch(type){
-      case 'flavour': 
-        let flavour = [ ...this.state.flavour ]
-        flavour[idx].percent = event.target.value
-        this.setState({ flavour })
-        flavour = calcIngredients(this.state.flavour, this.state.total)
-        const flavourTotal = calcTotal(flavour)
-        this.setState({ flavour, flavourTotal })
-        break
-      case 'base': 
-        let base = [ ...this.state.base ]
-        base[idx].percent = event.target.value
-        this.setState({ base })
-        base = calcIngredients(this.state.base, this.state.total)
-        const baseTotal = calcTotal(base)
-        this.setState({ base, baseTotal })
-        break
-      default: console.error('wrong type in totalHandler()')
-    }
+    // type can by flavour or base (str)
+    let variant = [ ...this.state[type] ]
+    variant[idx].percent = event.target.value
+    variant = calcIngredients(variant, this.state.total)
+    const variantTotal = calcTotal(variant)
+    this.setState({ [type]: variant, [type+"Total"]: variantTotal })
+    
   }
 
 
