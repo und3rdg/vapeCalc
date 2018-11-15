@@ -7,7 +7,8 @@ import Tbody from './Tbody'
 import {
   calcIngredients,
   calcTotal,
-  updateIngredients
+  updateIngredients,
+  totalOfType,
 }  from './../../Controlers/Calculate'
 import { sendToApi } from './../../Controlers/api'
 
@@ -45,7 +46,6 @@ class CalcTable extends Component {
 
 
   render(){
-    
     const ratio = this.vgRatio(this.state.base)
     return (
       <form
@@ -88,21 +88,26 @@ class CalcTable extends Component {
     )
   }
 
+
   vgRatio = (base) => base.filter(el => el.type === "vg")[0].percent
 
+
   ratioHandler = (event) => {
-    const base = this.state.base.map( el => {
-      el.percent = (el.type === "vg") ? event.target.value : el.percent
-      return el
-    })
+    let base = { ...this.state.base }
+
+    const maxPg = (100 - event.target.value)
+    const maxVg = event.target.value
+
+    const totalPg = totalOfType(this.state, "pg") 
+    const pg = maxPg - totalPg + this.state.base[1].percent
+    const totalVg = totalOfType(this.state, "vg") 
+    const vg = maxVg - totalVg + this.state.base[2].percent
+
+    base[1].percent = pg
+    base[2].percent = vg
+
     this.setState({ base })
     this.setState(updateIngredients(this.state.total, this.state.base, this.state.flavour))
-  }
-
-  totalHandler = (event) => {
-    const total = event.target.value
-    this.setState({ total })
-    this.setState(updateIngredients(total, this.state.base, this.state.flavour))
   }
 
 
@@ -111,12 +116,19 @@ class CalcTable extends Component {
       console.error(`type can only by 'base' or 'flavour' string. Inserted: [${type}]`)
       return
     }
+
     let variant = [ ...this.state[type] ]
     variant[idx].percent = event.target.value
     variant = calcIngredients(variant, this.state.total)
     const variantTotal = calcTotal(variant)
     this.setState({ [type]: variant, [type+"Total"]: variantTotal })
-    
+  }
+
+
+  totalHandler = (event) => {
+    const total = event.target.value
+    this.setState({ total })
+    this.setState(updateIngredients(total, this.state.base, this.state.flavour))
   }
 
 

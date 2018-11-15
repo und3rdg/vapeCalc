@@ -35,7 +35,7 @@ function calcTotal(base){
 }
 
 
-const calcIngredients = (base, total) => {
+function calcIngredients(base, total){
   return base
     .map((base, idx) => {
       base.type = base.name === 'VG' ? 'vg' : 'pg'
@@ -46,7 +46,7 @@ const calcIngredients = (base, total) => {
 }
 
 
-const updateIngredients = (total, base, flavour) => {
+function updateIngredients(total, base, flavour){
   return {
     base         : calcIngredients(base, total),
     flavour      : calcIngredients(flavour, total),
@@ -55,10 +55,31 @@ const updateIngredients = (total, base, flavour) => {
   }
 }
 
+function totalOfType(data, type){
+  if(type !== 'vg' && type !== 'pg'){
+    console.error(`type can by 'vg' or 'pg'. Inserted: [${type}]`)
+  }
+  function reducer(sum, el){
+    if(el.type === type){
+      sum += +(el.percent)
+    }
+    return sum
+  }
+  const base = data.base
+    .reduce(reducer, 0)
+  const flavour = data.flavour
+    .reduce(reducer, 0)
+
+  console.log(flavour)
+  return +(base + flavour).toFixed(2)
+}
+
+
 export {
   calcGrFromMl,
   calcMlFromPercent,
   calcTotal,
   calcIngredients,
   updateIngredients,
+  totalOfType
 } 

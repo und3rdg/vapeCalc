@@ -4,6 +4,7 @@ import {
   calcTotal,
   calcIngredients,
   updateIngredients,
+  totalOfType,
 } from './Calculate.js' 
 
 // fake data
@@ -75,11 +76,27 @@ describe('Wrapper calcIngredients()', ()=>{
 })
 
 
-describe('calculate all with updateIngredients()', ()=>{
+describe('updateIngredients()', ()=>{
   it('should return object', ()=>{
     expect(typeof updateIngredients(f.total, f.base, f.flavour)).toBe("object")
   })
   it('should by equal with another object', ()=>{
     expect( Object.keys(updateIngredients(f.total, f.base, f.flavour)) ).toEqual(["base", "flavour", "baseTotal", "flavourTotal"])
+  })
+})
+
+
+describe('totalOfType', ()=>{
+  it('should return number', ()=>{
+    expect(typeof totalOfType(f, 'pg')).toBe("number")
+  })
+  it('should return number', ()=>{
+    expect(typeof totalOfType(f, 'vg')).toBe("number")
+  })
+  it('should 40', ()=>{
+    expect(totalOfType(f, 'pg')).toBe(40)
+  })
+  it('should 60', ()=>{
+    expect(totalOfType(f, 'vg')).toBe(60)
   })
 })
