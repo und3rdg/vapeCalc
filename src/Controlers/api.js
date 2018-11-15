@@ -44,4 +44,7 @@ function php(data){
 
 
 
-export {sendToApi}
+export {
+  sendToApi,
+  compressor
+}
