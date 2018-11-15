@@ -21,7 +21,7 @@ class CalcTable extends Component {
       base: [
         { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
         { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
-        { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:''},
+        { name: 'VG'       , ml: 0, gr: 0, percent: 61 , type:''},
       ],
       baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
@@ -45,6 +45,8 @@ class CalcTable extends Component {
 
 
   render(){
+    
+    const ratio = this.vgRatio(this.state.base)
     return (
       <form
         onSubmit={e => e.preventDefault()}
@@ -56,6 +58,9 @@ class CalcTable extends Component {
         <UserInput
           totalHandler={this.totalHandler}
           total={this.state.total}
+          ratio={ratio}
+          ratioHandler={this.ratioHandler}
+          
         />
         <table className="calc_table">
           <Thead
@@ -83,6 +88,16 @@ class CalcTable extends Component {
     )
   }
 
+  vgRatio = (base) => base.filter(el => el.type === "vg")[0].percent
+
+  ratioHandler = (event) => {
+    const base = this.state.base.map( el => {
+      el.percent = (el.type === "vg") ? event.target.value : el.percent
+      return el
+    })
+    this.setState({ base })
+    this.setState(updateIngredients(this.state.total, this.state.base, this.state.flavour))
+  }
 
   totalHandler = (event) => {
     const total = event.target.value
