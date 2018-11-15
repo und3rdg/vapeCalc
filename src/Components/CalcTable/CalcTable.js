@@ -122,7 +122,7 @@ class CalcTable extends Component {
 
   saveHandler = () => {
     const data = this.state
-    sendToApi(data, 'php', true)
+    sendToApi(data, 'php', false) // bug - comperessor should not mutate state
   }
 
 

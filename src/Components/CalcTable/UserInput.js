@@ -7,7 +7,8 @@ class UserInput extends Component{
       <div className="userInput">
         <div className="userInput_item total">
           <input
-            type="text"
+            type="number"
+            step="5"
             defaultValue={ total }
             placeholder="{^,^}"
             onChange={ totalHandler }

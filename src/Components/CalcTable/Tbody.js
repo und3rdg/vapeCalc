@@ -10,6 +10,8 @@ class Tbody extends Component {
         <td>{name.gr} gr</td>
         <td>
           <input
+            type="number"
+            step="1"
             onChange={ (event) => this.props.percentHandler(event, idx, "base") }
             value={name.percent}
           /> %</td>
@@ -24,6 +26,7 @@ class Tbody extends Component {
         <td>
           <div className="flex_wrap">
             <input
+              type="text"
               className="flavour_name"
               value={name.name}
               placeholder="Flavour name"
@@ -40,6 +43,8 @@ class Tbody extends Component {
         <td>{name.gr} gr</td>
         <td>
           <input
+            type="number"
+            step="0.5"
             onChange={ (event) => percentHandler(event, idx, "flavour") }
             value={name.percent}
           /> %</td>

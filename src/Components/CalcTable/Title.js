@@ -6,6 +6,7 @@ class Title extends Component{
     return (
       <div className="recipe_name">
         <input
+          type="text"
           defaultValue={ recipeName }
           placeholder="Add title"
           onChange={titleHandler}
