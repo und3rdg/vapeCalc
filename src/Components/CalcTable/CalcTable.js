@@ -92,7 +92,10 @@ class CalcTable extends Component {
 
 
   percentHandler = (event, idx, type) => {
-    // type can by flavour or base (str)
+    if(type !== "base" && type !== "flavour"){
+      console.error(`type can only by 'base' or 'flavour' string. Inserted: [${type}]`)
+      return
+    }
     let variant = [ ...this.state[type] ]
     variant[idx].percent = event.target.value
     variant = calcIngredients(variant, this.state.total)
