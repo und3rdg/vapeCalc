@@ -11,7 +11,7 @@ function sendToApi(data, type, compression){
 }
 
 function compressor(data){
-  let compressData = { ...data }
+  let compressData = JSON.parse(JSON.stringify(data))
   delete compressData.theadTitles
   delete compressData.baseTotal
   delete compressData.flavourTotal
