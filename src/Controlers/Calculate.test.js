@@ -5,9 +5,12 @@ import {
   calcIngredients,
   updateIngredients,
   totalOfType,
+  baseFromRatio,
 } from './Calculate.js' 
 
-// fake data
+
+// FAKE DATA
+/////////////////////////////////
 const f = {
   percent: 5,
   total: 100,
@@ -22,6 +25,12 @@ const f = {
     { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
   ],
   flavourTotal: {ml:0, gr:0, percent:0},
+  ratio: {
+    vg: 60,
+    pg: 40 
+  },
+
+  // only for test's
   baseUpdated: [
     {"name": "Nicotine" , "ml": 7  , "gr": 7.25  , "percent": 7      , "type": "pg"} ,
     {"name": "PG"       , "ml": 23 , "gr": 23.83 , "percent": 23     , "type": "pg"} ,
@@ -29,16 +38,9 @@ const f = {
   ],
 }
 
-describe('Calculate ml from total and percent', ()=>{
-  it('should calculate ml',()=>{
-    expect(calcMlFromPercent(f.total, f.percent)).toBe(5.00)
-  })
-  it('should calculate ml',()=>{
-    expect(typeof calcMlFromPercent(f.total, f.percent)).toBe('number')
-  })
-})
-
-describe('Calculate Gr from Ml', ()=>{
+// TEST'S
+/////////////////////////////////
+describe('calcGrFromMl(total, type)', ()=>{
   it('should calculate gr for PG',()=>{
     expect(calcGrFromMl(f.ml,'pg')).toBe(103.60)
   })
@@ -50,7 +52,16 @@ describe('Calculate Gr from Ml', ()=>{
   })
 })
 
-describe('calcTotal()', ()=>{
+describe('calcMlFromPercent(total, percent)', ()=>{
+  it('should calculate ml',()=>{
+    expect(calcMlFromPercent(f.total, f.percent)).toBe(5.00)
+  })
+  it('should calculate ml',()=>{
+    expect(typeof calcMlFromPercent(f.total, f.percent)).toBe('number')
+  })
+})
+
+describe('calcTotal(base)', ()=>{
   it('should return total of ml', ()=>{
     expect(calcTotal(f.base).ml).toBe(10.3)
   })
@@ -66,7 +77,7 @@ describe('calcTotal()', ()=>{
 })
 
 
-describe('Wrapper calcIngredients()', ()=>{
+describe('calcIngredients(base, total)', ()=>{
   it('should return object', ()=>{
     expect(typeof calcIngredients(f.base, f.total)).toBe("object")
   })
@@ -76,7 +87,7 @@ describe('Wrapper calcIngredients()', ()=>{
 })
 
 
-describe('updateIngredients()', ()=>{
+describe('updateIngredients(total, base, flavour)', ()=>{
   it('should return object', ()=>{
     expect(typeof updateIngredients(f.total, f.base, f.flavour)).toBe("object")
   })
@@ -86,7 +97,7 @@ describe('updateIngredients()', ()=>{
 })
 
 
-describe('totalOfType', ()=>{
+describe('totalOfType(data, type)', ()=>{
   it('should return number', ()=>{
     expect(typeof totalOfType(f, 'pg')).toBe("number")
   })
@@ -98,5 +109,23 @@ describe('totalOfType', ()=>{
   })
   it('should 60', ()=>{
     expect(totalOfType(f, 'vg')).toBe(60)
+  })
+})
+
+describe('baseFromRatio(state)', ()=>{
+  it('should return number', ()=>{
+    expect(typeof baseFromRatio(f)).toBe("object")
+  })
+  it('should by number (pg)', ()=>{
+    expect(typeof baseFromRatio(f).ratio.pg).toBe("number")
+  })
+  it('should by 40 (pg)', ()=>{
+    expect(baseFromRatio(f).ratio.pg).toBe(40)
+  })
+  it('should by number (vg)', ()=>{
+    expect(typeof baseFromRatio(f).ratio.vg).toBe("number")
+  })
+  it('should by 60 (vg)', ()=>{
+    expect(baseFromRatio(f).ratio.vg).toBe(60)
   })
 })

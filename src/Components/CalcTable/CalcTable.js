@@ -8,7 +8,7 @@ import {
   calcIngredients,
   calcTotal,
   updateIngredients,
-  totalOfType,
+  baseFromRatio,
 }  from './../../Controlers/Calculate'
 import { sendToApi } from './../../Controlers/api'
 
@@ -22,7 +22,7 @@ class CalcTable extends Component {
       base: [
         { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
         { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
-        { name: 'VG'       , ml: 0, gr: 0, percent: 61 , type:''},
+        { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:''},
       ],
       baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
@@ -32,6 +32,10 @@ class CalcTable extends Component {
         // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
       ],
       flavourTotal: {ml:0, gr:0, percent:0},
+      ratio: {
+        vg: 60,
+        pg: 40 
+      }
     }
 
     const ingredients = updateIngredients(this.state.total, this.state.base, this.state.flavour)
@@ -46,7 +50,6 @@ class CalcTable extends Component {
 
 
   render(){
-    const ratio = this.vgRatio(this.state.base)
     return (
       <form
         onSubmit={e => e.preventDefault()}
@@ -58,7 +61,7 @@ class CalcTable extends Component {
         <UserInput
           totalHandler={this.totalHandler}
           total={this.state.total}
-          ratio={ratio}
+          ratio={this.state.ratio.vg}
           ratioHandler={this.ratioHandler}
           
         />
@@ -89,26 +92,13 @@ class CalcTable extends Component {
   }
 
 
-  vgRatio = (base) => base.filter(el => el.type === "vg")[0].percent
-
-  
-
-
   ratioHandler = (event) => {
-    let base = { ...this.state.base }
+    let state = { ...this.state }
+    state.ratio.vg = +event.target.value
+    state.ratio.pg = +(100 - event.target.value)
 
-    const maxPg = +(100 - event.target.value)
-    const maxVg = +event.target.value
-
-    const totalPg = totalOfType(this.state, "pg") 
-    const pg = maxPg - totalPg + this.state.base[1].percent
-    const totalVg = totalOfType(this.state, "vg") 
-    const vg = maxVg - totalVg + this.state.base[2].percent
-
-    base[1].percent = pg
-    base[2].percent = vg
-
-    this.setState({ base })
+    state = baseFromRatio(state)
+    this.setState({ state })
     this.setState(updateIngredients(this.state.total, this.state.base, this.state.flavour))
   }
 
@@ -124,6 +114,10 @@ class CalcTable extends Component {
     variant = calcIngredients(variant, this.state.total)
     const variantTotal = calcTotal(variant)
     this.setState({ [type]: variant, [type+"Total"]: variantTotal })
+
+    const state = baseFromRatio(this.state)
+    this.setState({ state })
+    this.setState(updateIngredients(this.state.total, this.state.base, this.state.flavour))
   }
 
 

@@ -55,6 +55,7 @@ function updateIngredients(total, base, flavour){
   }
 }
 
+
 function totalOfType(data, type){
   if(type !== 'vg' && type !== 'pg'){
     console.error(`type can by 'vg' or 'pg'. Inserted: [${type}]`)
@@ -65,12 +66,21 @@ function totalOfType(data, type){
     }
     return sum
   }
-  const base = data.base
-    .reduce(reducer, 0)
-  const flavour = data.flavour
-    .reduce(reducer, 0)
+  const base = data.base.reduce(reducer, 0)
+  const flavour = data.flavour.reduce(reducer, 0)
 
   return +(base + flavour).toFixed(2)
+}
+
+
+function baseFromRatio(state){
+  const totalVg = totalOfType(state, "vg") 
+  const totalPg = totalOfType(state, "pg") 
+  const pg = state.ratio.pg - totalPg + state.base[1].percent
+  const vg = state.ratio.vg - totalVg + state.base[2].percent
+  state.base[1].percent = pg
+  state.base[2].percent = vg
+  return state 
 }
 
 
@@ -80,5 +90,6 @@ export {
   calcTotal,
   calcIngredients,
   updateIngredients,
-  totalOfType
+  totalOfType,
+  baseFromRatio,
 } 
