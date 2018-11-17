@@ -61,7 +61,7 @@ function totalOfType(data, type){
   }
   function reducer(sum, el){
     if(el.type === type){
-      sum += +(el.percent)
+      sum += el.percent
     }
     return sum
   }
@@ -70,7 +70,6 @@ function totalOfType(data, type){
   const flavour = data.flavour
     .reduce(reducer, 0)
 
-  console.log(flavour)
   return +(base + flavour).toFixed(2)
 }
 
