@@ -97,10 +97,8 @@ class CalcTable extends Component {
     state.ratio.vg = +event.target.value
     state.ratio.pg = +(100 - event.target.value)
 
-    state = {
-      ...baseFromRatio(state),
-      ...updateIngredients(state.total, state.base, state.flavour)
-    }
+    state = { ...state, ...baseFromRatio(state) }
+    this.setState(updateIngredients(state.total, state.base, state.flavour))
     this.setState({ state })
   }
 
@@ -114,26 +112,21 @@ class CalcTable extends Component {
     let variant = [ ...this.state[type] ]
     variant[idx].percent = +event.target.value
     variant = calcIngredients(variant, this.state.total)
-    const variantTotal = calcTotal(variant)
-    const variantObj = { [type]: variant, [type+"Total"]: variantTotal }
 
     let state = {
       ...this.state,
-      ...variantObj,
+      [type]: variant,
+      [type+"Total"]: calcTotal(variant)
     }
-    state = {
-      ...state,
-      ...baseFromRatio(state),
-      ...updateIngredients(state.total, state.base, state.flavour)
-    }
+    state = { ...state, ...baseFromRatio(state) }
+    this.setState(updateIngredients(state.total, state.base, state.flavour))
     this.setState({ state })
   }
 
 
   totalHandler = (event) => {
-    let state = { ...this.state }
-    state.total = +event.target.value
-    state = { ...updateIngredients(state.total, state.base, state.flavour) }
+    let state = { ...this.state, total: +event.target.value }
+    this.setState(updateIngredients(state.total, state.base, state.flavour))
     this.setState({state})
   }
 
