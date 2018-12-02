@@ -81,10 +81,13 @@ class CalcTable extends Component {
           />
         </table>
         <button
+          type="button"
           onClick={this.addFlavourHandler}
+          tabIndex="500"
         >Add flavour</button>
         <button
           type="button"
+          tabIndex="600"
           onClick={this.saveHandler}
         >Save</button>
       </form>

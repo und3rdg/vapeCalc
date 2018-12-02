@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 
 class Tbody extends Component {
-  baseRow = (name, idx)=>{
+  baseRow(name, idx){
     return(
       <tr key={idx}>
         <td>{name.name}</td>
@@ -12,6 +12,7 @@ class Tbody extends Component {
           <input
             type="number"
             step="1"
+            tabIndex={ idx === 0 ? 100+idx : null }
             onChange={ (event) => this.props.percentHandler(event, idx, "base") }
             value={name.percent}
           /> %</td>
@@ -19,7 +20,7 @@ class Tbody extends Component {
     )
   }
 
-  flavourRow = (name, idx) => {
+  flavourRow(name, idx){
     const {percentHandler, nameHandler, delFlavourHandler} = this.props
     return(
       <tr key={idx}>
@@ -27,6 +28,7 @@ class Tbody extends Component {
           <div className="flex_wrap">
             <input
               type="text"
+              tabIndex={300+idx}
               className="flavour_name"
               value={name.name}
               placeholder="Flavour name"
@@ -45,6 +47,7 @@ class Tbody extends Component {
           <input
             type="number"
             step="0.5"
+            tabIndex={200+idx}
             onChange={ (event) => percentHandler(event, idx, "flavour") }
             value={name.percent}
           /> %</td>
