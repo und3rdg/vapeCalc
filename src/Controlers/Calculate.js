@@ -60,14 +60,14 @@ function totalOfType(data, type){
   if(type !== 'vg' && type !== 'pg'){
     console.error(`type can by 'vg' or 'pg'. Inserted: [${type}]`)
   }
+  const base = data.base.reduce(reducer, 0)
+  const flavour = data.flavour.reduce(reducer, 0)
   function reducer(sum, el){
     if(el.type === type){
       sum += el.percent
     }
     return sum
   }
-  const base = data.base.reduce(reducer, 0)
-  const flavour = data.flavour.reduce(reducer, 0)
 
   return +(base + flavour).toFixed(2)
 }
@@ -76,6 +76,7 @@ function totalOfType(data, type){
 function baseFromRatio(state){
   const totalVg = totalOfType(state, "vg") 
   const totalPg = totalOfType(state, "pg") 
+  // bug state from ratio blocking percent input
   const pg = state.ratio.pg - totalPg + state.base[1].percent
   const vg = state.ratio.vg - totalVg + state.base[2].percent
   state.base[1].percent = pg
