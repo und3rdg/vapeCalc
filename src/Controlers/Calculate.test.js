@@ -6,6 +6,7 @@ import {
   updateIngredients,
   totalOfType,
   baseFromRatio,
+  ratioFromBase,
 } from './Calculate.js' 
 
 
@@ -16,13 +17,13 @@ const f = {
   total: 100,
   ml: 100,
   base: [
-    { name: 'Nicotine' , ml: 2.10,  gr: 11.00,  percent:  7.00 , type:''},
-    { name: 'PG'       , ml: 3.10,  gr: 10.10,  percent: 23.00 , type:''},
-    { name: 'VG'       , ml: 5.101, gr: 10.011, percent: 60.002, type:''}, //(it should round it)
+    { name: 'Nicotine' , ml: 2.10,  gr: 11.00,  percent:  7.00 , type:'pg'},
+    { name: 'PG'       , ml: 3.10,  gr: 10.10,  percent: 23.00 , type:'pg'},
+    { name: 'VG'       , ml: 5.101, gr: 10.011, percent: 60.002, type:'vg'}, //(it should round it)
   ],
   baseTotal: {ml:0, gr:0, percent:0},
   flavour: [
-    { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+    { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:'pg'},
   ],
   flavourTotal: {ml:0, gr:0, percent:0},
   ratio: {
@@ -113,19 +114,37 @@ describe('totalOfType(data, type)', ()=>{
 })
 
 describe('baseFromRatio(state)', ()=>{
-  it('should return number', ()=>{
+  it('should by an object', ()=>{
     expect(typeof baseFromRatio(f)).toBe("object")
   })
   it('should by number (pg)', ()=>{
-    expect(typeof baseFromRatio(f).ratio.pg).toBe("number")
+    expect(typeof baseFromRatio(f)[1].percent).toBe("number")
   })
   it('should by 40 (pg)', ()=>{
-    expect(baseFromRatio(f).ratio.pg).toBe(40)
+    expect(baseFromRatio(f)[1].percent).toBe(23)
   })
   it('should by number (vg)', ()=>{
-    expect(typeof baseFromRatio(f).ratio.vg).toBe("number")
+    expect(typeof baseFromRatio(f)[2].percent).toBe("number")
   })
   it('should by 60 (vg)', ()=>{
-    expect(baseFromRatio(f).ratio.vg).toBe(60)
+    expect(baseFromRatio(f)[2].percent).toBe(60)
+  })
+})
+
+describe('ratioFromBase(state)', ()=>{
+  it('should by an object', ()=>{
+    expect(typeof ratioFromBase(f)).toBe("object")
+  })
+  it('should by number', ()=>{
+    expect(typeof ratioFromBase(f).pg).toBe("number")
+  })
+  it('should by number', ()=>{
+    expect(typeof ratioFromBase(f).vg).toBe("number")
+  })
+  it('should by number', ()=>{
+    expect(ratioFromBase(f).pg).toBe(40)
+  })
+  it('should by number', ()=>{
+    expect(ratioFromBase(f).vg).toBe(60)
   })
 })

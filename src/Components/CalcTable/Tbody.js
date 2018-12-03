@@ -12,7 +12,7 @@ class Tbody extends Component {
           <input
             type="number"
             step="1"
-            tabIndex={ idx === 0 ? 100+idx : null }
+            tabIndex={100 + idx}
             onChange={ (event) => this.props.percentHandler(event, idx, "base") }
             value={name.percent}
           /> %</td>

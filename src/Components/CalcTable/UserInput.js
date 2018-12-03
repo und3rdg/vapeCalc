@@ -24,10 +24,10 @@ class UserInput extends Component{
             min="0"
             max="100"
             step="5"
-            defaultValue={ ratio }
+            value={ ratio }
             onChange={ ratioHandler }
           />
-          <label>PG / VG</label>
+          <label><span className="small">({100-ratio})</span>PG / VG<span className="small">({ratio})</span></label>
         </div>
 
       </div>

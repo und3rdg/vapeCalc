@@ -76,12 +76,22 @@ function totalOfType(data, type){
 function baseFromRatio(state){
   const totalVg = totalOfType(state, "vg") 
   const totalPg = totalOfType(state, "pg") 
-  // bug state from ratio blocking percent input
   const pg = state.ratio.pg - totalPg + state.base[1].percent
   const vg = state.ratio.vg - totalVg + state.base[2].percent
-  state.base[1].percent = pg
-  state.base[2].percent = vg
-  return state 
+  state.base[1].percent = +pg.toFixed(2)
+  state.base[2].percent = +vg.toFixed(2)
+  return state.base 
+}
+
+
+function ratioFromBase(state){
+  const totalVg = totalOfType(state, "vg") 
+  const totalPg = totalOfType(state, "pg") 
+  const pg = 100 - totalVg
+  const vg = 100 - totalPg
+  state.ratio.pg = +pg.toFixed()
+  state.ratio.vg = +vg.toFixed()
+  return state.ratio 
 }
 
 
@@ -93,4 +103,5 @@ export {
   updateIngredients,
   totalOfType,
   baseFromRatio,
+  ratioFromBase,
 } 

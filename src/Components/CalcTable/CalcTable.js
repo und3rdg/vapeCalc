@@ -9,27 +9,30 @@ import {
   calcTotal,
   updateIngredients,
   baseFromRatio,
+  ratioFromBase,
 }  from './../../Controlers/Calculate'
 import { sendToApi } from './../../Controlers/api'
 
 class CalcTable extends Component {
   constructor(){
     super()
-    this.state = {
+    let state = {
       recipeName: '',
       total: 50,
       theadTitles: [ 'Ingredient', 'Millilitre', 'Gram', 'Percent' ],
       base: [
-        { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:''},
-        { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:''},
-        { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:''},
+        { name: 'Nicotine' , ml: 0, gr: 0, percent: 7  , type:'pg'},
+        { name: 'PG'       , ml: 0, gr: 0, percent: 23 , type:'pg'},
+        { name: 'VG'       , ml: 0, gr: 0, percent: 60 , type:'vg'},
       ],
       baseTotal: {ml:0, gr:0, percent:0},
       flavour: [
         // sample data
-        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
-        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
-        // { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:''},
+        /**/
+        { name: 'Apple Fuji (FA)' , ml: 2, gr: 10, percent: 10 , type:'pg'},
+        { name: 'Caramel (FA)' , ml: 2, gr: 10, percent: 10 , type:'pg'},
+        { name: 'Kiwi (TPA)' , ml: 2, gr: 10, percent: 10 , type:'pg'},
+        /**/
       ],
       flavourTotal: {ml:0, gr:0, percent:0},
       ratio: {
@@ -37,15 +40,11 @@ class CalcTable extends Component {
         pg: 40 
       }
     }
-
-    const ingredients = updateIngredients(this.state.total, this.state.base, this.state.flavour)
-    this.state = {
-      ...this.state,
-      base         : ingredients.base,
-      baseTotal    : ingredients.baseTotal,
-      flavour      : ingredients.flavour,
-      flavourTotal : ingredients.flavourTotal,
-    }
+    
+    state.base = baseFromRatio(state)
+    // state.ratio = ratioFromBase(state)
+    state = { ...state, ...updateIngredients(state.total, state.base, state.flavour) }
+    this.state = state 
   }
 
 
@@ -99,9 +98,8 @@ class CalcTable extends Component {
     let state = { ...this.state }
     state.ratio.vg = +event.target.value
     state.ratio.pg = +(100 - event.target.value)
-
-    state = { ...state, ...baseFromRatio(state) }
-    this.setState(updateIngredients(state.total, state.base, state.flavour))
+    state.base = baseFromRatio(state)
+    state = { ...state, ...updateIngredients(state.total, state.base, state.flavour) }
     this.setState({ state })
   }
 
@@ -121,16 +119,24 @@ class CalcTable extends Component {
       [type]: variant,
       [type+"Total"]: calcTotal(variant)
     }
-    state = { ...state, ...baseFromRatio(state) }
-    this.setState(updateIngredients(state.total, state.base, state.flavour))
+
+    // if changed pg or vg update ratio, otherwise percent pg
+    if(type === 'base' && idx > 0){
+      state.ratio = ratioFromBase(state)
+    } else {
+      state.base = baseFromRatio(state)
+    }
+    state = { ...state, ...updateIngredients(state.total, state.base, state.flavour) }
     this.setState({ state })
   }
 
 
   totalHandler = (event) => {
     let state = { ...this.state, total: +event.target.value }
-    this.setState(updateIngredients(state.total, state.base, state.flavour))
-    this.setState({state})
+
+    state.base = baseFromRatio(state)
+    state = { ...state, ...updateIngredients(state.total, state.base, state.flavour) }
+    this.setState({ state })
   }
 
 
